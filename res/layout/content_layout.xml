@@ -1,44 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/popmenu_content"
-    android:orientation="vertical"
-    android:background="@drawable/popmenu_background"
-    android:layout_width="50dp"
-    android:layout_height="285dp">
-		
-			<ImageView
-				android:id="@+id/rotateswitch"
-				android:layout_marginTop="18dp"                
-				android:layout_width="50dp"
-				android:layout_height="50dp"			
-				android:src="@drawable/rotate_normal"								android:layout_gravity="center_horizontal"
-			/>
-			<ImageView
-				android:id="@+id/vibrateswitch"
-				android:layout_marginTop = "2dp"
-				android:layout_width="50dp"
-				android:layout_height="50dp"
-				android:src="@drawable/vibrate_normal"								android:layout_gravity="center_horizontal"
-			/>
-			<ImageView
-				android:id="@+id/wifiswitch"
-				android:layout_marginTop="2dp"
-				android:layout_width="50dp"
-				android:layout_height="50dp"
-				android:src="@drawable/wifi_normal"								android:layout_gravity="center_horizontal"
-			/>
-			<ImageView
-				android:id="@+id/syncswitch"
-				android:layout_marginTop="2dp"
-				android:layout_width="50dp"
-				android:layout_height="50dp"
-				android:src="@drawable/sync_normal"								android:layout_gravity="center_horizontal"
-			/>
-			<ImageView
-				android:id="@+id/lightswitch"
-				android:layout_marginTop="2dp"
-				android:layout_width="50dp"
-				android:layout_height="50dp"
-				android:src="@drawable/light_normal"								android:layout_gravity="center_horizontal"
-			/>
-</LinearLayout>

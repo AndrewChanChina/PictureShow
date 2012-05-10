@@ -744,7 +744,7 @@ public class Workspace extends ViewGroup implements DropTarget, DragSource,
 		 */
 		// Log.i("===workspace===onInterceptTouchEvent=====",
 		// "=====setOnLongClickListener====ACTION_DOWN==");
-		return mTouchState != TOUCH_STATE_REST;
+		return mTouchState != TOUCH_STATE_REST;  //如果是workspace上的“左右”滑动事件，则会被拦截下来自己处理
 	}
 
 	/**

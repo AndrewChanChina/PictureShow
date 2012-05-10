@@ -92,6 +92,8 @@
    <string name="sort_app">应用分类到</string>
    
     <string name="last_page">上一张</string>
+    <string name="next_page">下一张</string>
+    <string name="company_info">公司介绍</string>
 
    
 </resources>

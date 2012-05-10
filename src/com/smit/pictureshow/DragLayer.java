@@ -46,6 +46,7 @@ public class DragLayer extends FrameLayout {
     
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+    	Log.e("DragLayer","---dispatchKeyEvent()");
         return mDragController.dispatchKeyEvent(event) || super.dispatchKeyEvent(event);
     }
 

@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import com.smit.pictureshow.R;
+import com.smit.pictureshow.utilities.GlobalConstant;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -46,6 +47,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.ContentObserver;
@@ -192,7 +194,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	private CellLayout.CellInfo mAddItemCellInfo;
 	private CellLayout.CellInfo mMenuAddInfo;
-	private final int[] mCellCoordinates = new int[2];
 	// private FolderInfo mFolderInfo;
 
 	private Bundle mSavedState;
@@ -200,9 +201,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private SpannableStringBuilder mDefaultKeySsb = null;
 
 	private boolean mIsNewIntent;
-
 	private boolean mWorkspaceLoading = true;
-
 	private boolean mPaused = true;
 	private boolean mRestoring;
 	private boolean mWaitingForResult;
@@ -218,14 +217,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	private boolean mUtsTestMode;
 
-	private ImageButton mImageButtonOne;
-	private ImageButton mImageButtonTwo;
-	private ImageButton mImageButtonThree;
-	private ImageButton mImageButtonFour;
-	private ImageButton mImageButtonFive;
-	private View mViewSort;// 分类和表格整体VIEW
-	private View mFivescreen;// 五分屏整体VIEW
-
 	// in launcher added WORDSAPCE 五个CELLLAYOUT
 	private CellLayout mCellLayout;
 	private CellLayout mCellLayout1;
@@ -238,13 +229,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	// 表格中分类初始化默认为所有应用和点击分类BUTTON次数为0
 	public static int mApplicationType = LauncherSettings.Favorites.SORT_APPVIEWS;
 
-	// added by liuw
-	private final int[] mBitmapResId = new int[] { R.drawable.shortcut,
-			R.drawable.shortcut1, R.drawable.shortcut2, R.drawable.shortcut3,
-			R.drawable.shortcut4, R.drawable.shortcut5, R.drawable.shortcut6,
-			R.drawable.shortcut7 };
-	private Random random = new Random();
-
+	//浏览图片
+	private ImageView mImageView;
+	private int mCurrentPic;
+	
 	// enter into application
 	public void ExcuteApk(String pkg) {
 		PackageManager packageManager = this.getPackageManager();
@@ -647,7 +635,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 */
 	private void setupViews() {
 		dragController = mDragController;
-
+        
+		mImageView = (ImageView)findViewById(R.id.image);
+		
 		dragLayer = (DragLayer) findViewById(R.id.drag_layer);
 		dragLayer.setDragController(dragController);
 
@@ -685,23 +675,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		// mod:lsj
 		mWorkspace.scrollRight();
 	}
-
-
-	/**
-	 * create a radom bitmap resid.
-	 * 
-	 * @auther liuw
-	 * 
-	 */
-
-	private int produceResid() {
-		int index = 0;
-		int len = mBitmapResId.length;
-		index = random.nextInt(len);
-		return mBitmapResId[index];
-	}
-
-
 
 	void closeSystemDialogs() {
 		getWindow().closeAllPanels();
@@ -1003,16 +976,16 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 */
 	public void onClick(View v) {
 		Object tag = v.getTag();
-//		if (tag instanceof ShortcutInfo) {
-//			// Open shortcut
-//			final Intent intent = ((ShortcutInfo) tag).intent;
-//			int[] pos = new int[2];
-//			v.getLocationOnScreen(pos);
-//			intent.setSourceBounds(new Rect(pos[0], pos[1], pos[0]
-//					+ v.getWidth(), pos[1] + v.getHeight()));
-//			startActivitySafely(intent);
-//
-//		}
+		// if (tag instanceof ShortcutInfo) {
+		// // Open shortcut
+		// final Intent intent = ((ShortcutInfo) tag).intent;
+		// int[] pos = new int[2];
+		// v.getLocationOnScreen(pos);
+		// intent.setSourceBounds(new Rect(pos[0], pos[1], pos[0]
+		// + v.getWidth(), pos[1] + v.getHeight()));
+		// startActivitySafely(intent);
+		//
+		// }
 
 	}
 
@@ -1532,7 +1505,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		}
 	}
 
-
 	/**
 	 * Callback saying that there aren't any more items to bind.
 	 * 
@@ -1574,9 +1546,57 @@ public final class Launcher extends Activity implements View.OnClickListener,
 							.getCurrentScreen()), false);
 			btn.setTag(itemInfo);
 			btn.setText(itemInfo.title);
+			setClickListenerForButton(btn);
 			mWorkspace.addInScreen(btn, itemInfo.screen, itemInfo.cellX,
 					itemInfo.cellY, 1, 1, false);
 		}
 	}
+	
+	private void setClickListenerForButton(Button btn) {
+		String title = btn.getText().toString();
+		ItemInfo itemInfo = (ItemInfo) btn.getTag();
+		int screen = itemInfo.screen;
+		switch (screen) {
+		case GlobalConstant.SCREEN_BROWSER:
+			if (title.equals(Launcher.this.getResources().getString(R.string.next_page))) {
+				if (GlobalConstant.ISDEBUG) {
+                   btn.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View arg0) {
+						// TODO Auto-generated method stub
+						if(mCurrentPic>=GlobalConstant.PICTURES_ID.length-1){
+							mCurrentPic = -1;
+						}
+						mImageView.setImageResource(GlobalConstant.PICTURES_ID[++mCurrentPic]);
+					}
+				});
+				}else{//非调试模式下浏览指定文件夹的图片
+					
+				}
+			} else if (title.equals(Launcher.this.getResources().getString(R.string.last_page))) {
+				if (GlobalConstant.ISDEBUG) {
 
+					btn.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View arg0) {
+							// TODO Auto-generated method stub
+							if(mCurrentPic<=0){
+								mCurrentPic = GlobalConstant.PICTURES_ID.length;
+							}
+							mImageView.setImageResource(GlobalConstant.PICTURES_ID[--mCurrentPic]);
+						}
+					});
+				}else{//非调试模式下浏览指定文件夹的图片
+					
+				}
+			}
+			break;
+			
+		case GlobalConstant.SCREEN_BASE_INFO:
+			break;
+		}
+		
+	}
 }

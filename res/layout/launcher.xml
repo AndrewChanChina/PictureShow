@@ -20,7 +20,10 @@
     android:id="@+id/drag_layer"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
-
+    <ImageView android:id="@+id/image"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:src="@drawable/default_wallpaper11"/>
     <com.smit.pictureshow.Workspace
         android:id="@+id/workspace"
         android:layout_width="fill_parent"
@@ -34,10 +37,10 @@
             android:id="@+id/cell1"
             layout="@layout/workspace_screen" />
 
-        <!--<include
+        <include
             android:id="@+id/cell2"
             layout="@layout/workspace_screen" />
-
+<!--  
         <include
             android:id="@+id/cell3"
             layout="@layout/workspace_screen" />
@@ -50,12 +53,7 @@
             android:id="@+id/cell5"
             layout="@layout/workspace_screen" />
     --></com.smit.pictureshow.Workspace>
-    
-    <!-- 这样布局不行，IamgeView会覆盖在workspace之上  
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:src="@drawable/ic_launcher"/> -->
+
     <!-- The workspace contains 3 screens of cells --><!--
 
     <RelativeLayout

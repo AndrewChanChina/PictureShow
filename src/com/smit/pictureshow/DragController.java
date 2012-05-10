@@ -169,14 +169,14 @@ public class DragController {
      */
     //mod:lsj //如果是表格数据,同时是allappviews,ususally,recent分类下数据则显示的应用图标的获取,如果是WORKSPACE空间则不变
     public void startDrag(View v, DragSource source, Object dragInfo, int dragAction) {
-        mOriginator = v;//view source is workspace ,AllAppsView,Folder
-        if(source instanceof Workspace)
+        mOriginator = v;   //view source is workspace ,AllAppsView,Folder
+        if(source instanceof Workspace)   //如果被拖动的view的上层view是workspace
         {	
-  	        Bitmap b = getViewBitmap(v);//get image background 
+  	        Bitmap b = getViewBitmap(v);  //get image background 
   	        int[] loc = mCoordinatesTemp;
   	        v.getLocationOnScreen(loc);
-  	        int screenX = loc[0];
-  	        int screenY = loc[1];
+  	        int screenX = loc[0];   
+  	        int screenY = loc[1];  
   	        startDrag(b, screenX, screenY, 0, 0, b.getWidth(), b.getHeight(),source, dragInfo, dragAction);
   	        b.recycle();
   	        if (dragAction == DRAG_ACTION_MOVE) {
@@ -241,7 +241,7 @@ public class DragController {
     /**
      * Draw the view into a bitmap.
      */
-    private Bitmap getViewBitmap(View v) {
+    private Bitmap getViewBitmap(View v) {  
         v.clearFocus();
         v.setPressed(false);
 
@@ -317,6 +317,7 @@ public class DragController {
             recordScreenSize();
         }
 
+        //getRawX()与getRawY()获取的是屏幕坐标系中的坐标
         final int screenX = clamp((int)ev.getRawX(), 0, mDisplayMetrics.widthPixels);
         final int screenY = clamp((int)ev.getRawY(), 0, mDisplayMetrics.heightPixels);
 
@@ -340,7 +341,7 @@ public class DragController {
                 break;
         }
        
-        return mDragging;
+        return mDragging;  //mDragging在startDrag()中赋值为true
     }
 
     /**
@@ -614,6 +615,7 @@ public class DragController {
         mDeleteRegion = region;
     }
 
+    //处理左右滑动的线程
     private class ScrollRunnable implements Runnable {
         private int mDirection;
         ScrollRunnable() {
